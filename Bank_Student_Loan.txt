@@ -1,0 +1,118 @@
+create table institution
+(SchoolNo number PRIMARY KEY,
+Address varchar(45),
+Poscode varchar(10),
+City varchar(20),
+State varchar(33),
+ContactNumber varchar(25),
+Name varchar(25));
+insert into institution values('1','1,Jalan Puncak Menara Gading, Taman Connaught',' 56000',' Kuala Lumpur',' Wilayah Persekutuan Kuala Lumpur','03-91018880','UCSI University');
+insert into institution values('2','5, Jalan Universiti,Bandar Sunway','47500','Petaling Jaya','Selangor','03-74918622','Sunway University');
+insert into institution values('3','Jalan Teknologi,Kota Damansara','47810','Petaling Jaya','Selangor','03-61451777','SEGi University');
+insert into institution values('4','Kampus Utama,Jalan Genting Kelang','53300','Kuala Lumpur','Wilayah Persekutuan Kuala Lumpur','03-41423166','TAR College');
+insert into institution values('5','Persiaran Multimedia','63100','Cyberjaya',' Selangor','1-300-80-0668','Multimedia University');
+
+
+create table student
+(StudID varchar(15) Primary Key,
+StudName varchar(15),
+IC number,
+Address varchar(15),
+ContactNo varchar(12),
+Citizenship varchar(11),
+PreviousEduGPA decimal(3,2),
+Programme varchar(9),
+Email varchar(18),
+SchoolNo number ,
+LoanID varchar(7));
+insert into student values('SCKD1705568','Siew Ma Kai','000464010559','KotaDamansara','019-6593257','Malaysia','2.59','BECE','carl35@gmail.com','1','A01');
+insert into student values('SCKD1705594','En Jia Si','000502010554','KotaDamansara','016-5429318','Malaysia','3.00','BECE','andy94@gmail.com','3','A02');
+insert into student values('SCKD1708525','Chew Yi Kuai','000605010779','KotaDamansara','017-3598720','Malaysia','3.56','BIT','Ken25@gmail.com','1','A03');
+insert into student values('SCKD1752259','Ong Xu Hui','000598037759','KotaDamansara','019-5934685','Malaysia','4.00','BECE','peter59@gmail.com','3','A04');
+insert into student values('SCKD1802265','Shane','000356010591','KotaDamansara','017-1186572','Malaysia','3.86','BIT','max36@gmail.com','5','A05');
+insert into student values('SUKD1705521','John','000259015567','KotaDamansara','012-2598635','Malaysia','3.25','BBM','john21@gmail.com','4','A06');
+insert into student values('SUKD1705582','Kai Bu Lai','000894038695','KotaDamansara','016-4493578','Malaysia','3.32','BBM','sally55@gmail.com','4','A07');
+insert into student values('SUKD1802658','Wong Xiu Kai','000562026587','KotaDamansara','017-8593614','Malaysia','3.59','BIT','kelly58@gmail.com','2','A08');
+insert into student values('SUKD1807782','Mary','000482015968','KotaDamansara','017-5986314','Malaysia','3.78','BIA','mary82@gmail.com','5','A09');
+insert into student values('SUKD1809124','Gary','000598027755','KotaDamansara','019-2556895','Malaysia','3.26','BECE','gary24@gmail.com','2','A10');
+
+create table PaymentType
+(PaymentID   varchar(3) PRIMARY KEY,
+LoanDate  date,
+MonthlyPayment_RM  varchar(10),
+TotalPaymentRM varchar(10),
+LoanID   varchar(3));
+insert into PaymentType values ('P01', '24-FEB-2019', '250','73150', 'A01');
+insert into PaymentType values ('P02', '25-FEB-2019', '250','67275','A02');
+insert into PaymentType values ('P03', '26-FEB-2019', '250','45000', 'A03');
+insert into PaymentType values ('P04', '27-FEB-2019', '250','41000', 'A04');
+insert into PaymentType values ('P05', '1-MAR-2019', '250','35700', 'A05');
+insert into PaymentType values ('P06', '2-MAR-2019', '250','41200', 'A06');
+insert into PaymentType values ('P07', '4-MAR-2019', '250','84400', 'A07');
+insert into PaymentType values ('P08', '5-MAR-2019', '250','52500', 'A08');
+insert into PaymentType values ('P09', '6-MAR-2019', '250','22220', 'A09');
+insert into PaymentType values ('P10', '9-MAR-2019', '250','18180', 'A10');
+
+create table Loan
+(LoanID   varchar(10) PRIMARY KEY,
+studID  VARCHAR(20),
+LoanInterest       varchar(10),
+LoanType   varchar(20),
+LoanDuration_YEAR  varchar(20),
+LoanAm_RM  varchar(10),
+PaymentID  varchar(10));
+insert into Loan values ('A01','SCKD1705568','4.5%','Studloan','4.5','70,000','P01');
+insert into Loan values ('A02','SCKD1705594','3.5%','Studloan','3.5','65,000','P02');
+insert into Loan values ('A03','SCKD1708525','4%','Studloan','4','45,000','P03');
+insert into Loan values ('A04','SCKD1752259','2.5%','Studloan','2.5','40,000','P04');
+insert into Loan values ('A05','SCKD1802265','2%','Studloan','2','35,000','P05');
+insert into Loan values ('A06','SUKD1705521','3%','Studloan','3','40,000','P06');
+insert into Loan values ('A07','SUKD1705582','5.5%','Studloan','5.5','80,000','P07');
+insert into Loan values ('A08','SUKD1802658','5%','Studloan','5','50,000','P08');
+insert into Loan values ('A09','SUKD1807782','1%','Studloan','1','22,000','P09');
+insert into Loan values ('A10','SUKD1809124','1%','Studloan','1','18,000','P10');
+
+ALTER TABLE student
+	ADD CONSTRAINT sc_fk
+	FOREIGN KEY(SchoolNo)
+	REFERENCES institution(SchoolNo);
+
+ALTER TABLE student
+	ADD CONSTRAINT li_fk
+	FOREIGN KEY(LoanID)
+	REFERENCES Loan(LoanID);
+
+ALTER TABLE Loan
+	ADD CONSTRAINT pi_fk
+	FOREIGN KEY(PaymentID)
+	REFERENCES PaymentType(PaymentID);
+
+/*
+i institution
+s student
+p payment
+l loan
+*/
+set line 400
+
+select s.StudName,p.LoanID,(p.TotalPaymentRM/p.MonthlyPayment_RM)/12 as PayDuration
+from PaymentType p,student s
+where s.LoanID=p.LoanID and p.TotalPaymentRM >= 50000;
+
+select *from student
+where PreviousEduGPA>=3.5 or SchoolNo=2;
+
+select *from student
+order by StudName asc;
+
+select student.StudName, student.StudID,Loan.LoanID, Loan.LoanAm_RM
+from student
+join Loan on
+Student.LoanID = Loan.LoanID;
+
+select max(TotalPaymentRM) as "Highest_Payment",min(TotalPaymentRM) as "Lowest_Payment",
+       avg(TotalPaymentRM) as "Average_Amount_Of_Payment", sum(TotalPaymentRM) as "Total_Amount"
+from PaymentType;
+
+
+
